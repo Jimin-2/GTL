@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Translation App</title>
+</head>
+<body>
+<h1>Translation App</h1>
+<label for="languageSelect">Select language:</label>
+<select id="languageSelect">
+  <option value="en">English</option>
+  <option value="ko">Korean</option>
+  <option value="es">Spanish</option>
+  <!-- 다른 언어 옵션들을 추가하세요 -->
+</select>
+<br><br>
+<textarea id="textInput" rows="4" cols="50"></textarea>
+<br><br>
+<button onclick="translateText()">Translate</button>
+<br><br>
+<div id="translatedText"></div>
+
+<script>
+  async function translateText() {
+    const text = document.getElementById('textInput').value;
+    const targetLang = document.getElementById('languageSelect').value;
+
+    if (!text) {
+      alert('Please provide text to translate');
+      return;
+    }
+
+    try {
+      const response = await fetch(`/translate?text=${encodeURIComponent(text)}&target=${targetLang}`);
+      const translatedText = await response.text();
+      document.getElementById('translatedText').innerText = translatedText;
+    } catch (error) {
+      console.error('Translation failed:', error);
+      document.getElementById('translatedText').innerText = 'Translation error';
+    }
+  }
+</script>
+</body>
+</html>
